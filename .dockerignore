@@ -1,0 +1,8 @@
+target
+.git
+.idea
+uploads
+careerhub-local.properties
+careerhub-local.properties.tmp
+careerhub-local.properties.bak
+*.log

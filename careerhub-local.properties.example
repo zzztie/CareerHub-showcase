@@ -1,0 +1,3 @@
+# Copy to careerhub-local.properties in the project root for a local IDEA run.
+# The copied file is ignored by Git and Docker; never commit a real password.
+spring.datasource.password=replace-with-your-local-password

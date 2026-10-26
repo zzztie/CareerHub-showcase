@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: careerhub
+
+  profiles:
+    active: dev
+
+  logging:
+    level:
+      org.springframework.transaction.interceptor: TRACE

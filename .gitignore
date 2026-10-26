@@ -1,0 +1,55 @@
+target/
+/.idea/
+/docs/learning-handoff.md
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+# 本地 HTTP 接口调试（包含 Token 等敏感信息）
+/requests.http
+
+# 本地测试 PDF
+/test_2.pdf
+/*.pdf
+
+# 用户上传文件
+/uploads/
+
+# IDEA 本机数据库凭据（由 application.properties 可选导入）
+/careerhub-local.properties
+/careerhub-local.properties.tmp
+/careerhub-local.properties.bak
