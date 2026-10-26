@@ -21,7 +21,7 @@
 
 CareerHub 面向求职管理场景，提供用户信息管理、岗位检索、简历文件管理和基础认证能力。项目按 Controller → Service → Mapper 分层组织，使用 MyBatis-Plus 访问 MySQL，并在岗位详情查询中使用 Redis 实现 Cache Aside 缓存策略。
 
-目前已完成后端核心功能与 Service 层自动化测试，可在本地进行接口演示。独立的 CareerAI 项目已实现简历与岗位 RAG 对比、Agent 岗位分析等能力，并通过 HTTP 调用 CareerHub；CareerAI 的代码不包含在本项目中。两个项目现可使用同一套 Docker Compose 在本机启动，已验证核心服务与部分真实业务链路；尚未对外部署或完成公开发布。
+目前已完成后端核心功能与 Service 层自动化测试，可在本地进行接口演示。独立的 [CareerAI](https://github.com/zzztie/CareerAI) 项目已实现简历与岗位 RAG 对比、Agent 岗位分析等能力，并通过 HTTP 调用 CareerHub；CareerAI 的代码不包含在本项目中。两个项目现可使用同一套 Docker Compose 在本机启动，已验证核心服务与部分真实业务链路；尚未部署公网服务。
 
 ## 核心功能
 
@@ -180,7 +180,7 @@ CareerHub/
 
 ### 2. 配置应用
 
-按照 `src/main/resources/application.yml` 及实际使用的环境配置（例如 `application-dev.yml`）填写 MySQL、Redis 等连接信息。数据库密码可通过环境变量 `SPRING_DATASOURCE_PASSWORD` 提供；本地 IDEA 运行也可把根目录的 `careerhub-local.properties.example` 复制为 `careerhub-local.properties`，只在复制文件中填写密码。该本机文件被 Git 与 Docker 构建上下文忽略，且需要把 IDEA 运行配置的工作目录设为项目根目录。不要把实际密码写回已跟踪的 `application.properties`。
+按照 `src/main/resources/application.properties` 及实际使用的环境配置（例如 `application-dev.yml`）填写 MySQL、Redis 等连接信息。数据库密码可通过环境变量 `SPRING_DATASOURCE_PASSWORD` 提供；本地 IDEA 运行也可把根目录的 `careerhub-local.properties.example` 复制为 `careerhub-local.properties`，只在复制文件中填写密码。该本机文件被 Git 与 Docker 构建上下文忽略，且需要把 IDEA 运行配置的工作目录设为项目根目录。不要把实际密码写回已跟踪的 `application.properties`。
 
 **必须为启动 Java 进程配置环境变量 `JWT_SECRET`。** 已知当前项目的 JWT 配置通过 `${JWT_SECRET}` 读取密钥。请使用符合当前 `JwtService` 要求的随机密钥，勿在公开仓库或 README 中填写真实值。
 
@@ -260,12 +260,13 @@ mvn test
 
 ## 当前限制与后续规划
 
-当前为后端 v1.0 **发布候选版**，正式打 Tag / 公开发布前应核对：
+当前为后端 v1.0 **发布候选版**，公开展示前应核对：
 
-- [ ] **安全：** 历史检查已确认原 `application.properties` 的数据库密码仍在 `HEAD`，且本地 `origin/main` 指向同一提交；`requests.http` 曾进入历史，但对其补丁的常见 Bearer/JWT、Token、密码模式检查未命中。用户已将仓库改为 Private；本机和演示环境中相关数据库、消息队列账号的密码均已轮换，当前项目配置扫描未再发现旧公开值。仍须人工复查并清理待公开的历史。`.gitignore` 和当前文件脱敏不能抹除旧提交历史。
+- [x] **安全：** 本展示仓库从已审查的工作文件建立独立历史，不包含原开发仓库提交。当前提交中的配置以环境变量和本机忽略文件接收密码；发布候选文件与本机现行凭据核对无命中。
 - [ ] **权限：** 验证最新 `WebConfig` 的 JWT 拦截范围，以及简历上传、查询、下载、删除的授权链路。
-- [ ] **配置：** 当前工作树已把 MySQL 密码从已跟踪的 `application.properties` 移到被忽略的本机文件；发布前仍须审查已有 Git 历史和其他配置中的真实密钥。
-- [ ] **验证：** 在拟发布 Commit 上重新执行 `mvn test`，确认 HTTP 核心接口可正常访问。
-- [ ] **版本：** 完成 README 审查后再创建并推送 `v1.0` Git Tag。
+- [x] **配置：** 真实 MySQL 密码由环境变量或被忽略的本机文件提供；演示环境使用自己的 `.env`。
+- [x] **单元测试：** 展示候选已运行 `mvn test`，21 个测试通过。
+- [ ] **现场验收：** 在全新克隆目录中按文档启动并复核核心 HTTP 接口；本机演示已跑通，不等于新环境自动具备数据和模型。
+- [ ] **版本：** 完成公开展示审查后再创建 `v1.0` Git Tag。
 
 后续迭代方向包括更完整的 Controller / 集成测试、文件存储与数据库一致性处理、复杂场景压测，以及生产环境部署与监控。独立的 **CareerAI** 智能简历分析与求职辅助服务已进入本地联调和作品展示阶段。
